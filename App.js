@@ -19,7 +19,7 @@ export default function App() {
         <Stack.Screen name="VowelSelection" component={VowelSelectionScreen} />
         <Stack.Screen name="Letter" component={LetterScreen} />
         <Stack.Screen name="Words" component={WordsScreen} />
-        <Stack.Screen name="Quiz" component={QuizScreen} />
+        <Stack.Screen name="QuizScreen" component={QuizScreen} />
         <Stack.Screen name="Result" component={ResultScreen} />
       </Stack.Navigator>
     </NavigationContainer>

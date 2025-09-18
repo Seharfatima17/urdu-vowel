@@ -12,7 +12,7 @@ export default function LetterScreen({ route, navigation }) {
     "ا": {
       sound: "الف",
       examples: ["ادب", "اثر", "اتحاد", "ادا", "انصاف", "انسان", "انار"],
-      practiceWords: ["اب", "ادب", "اجل", "اخبار", "ادرک"],
+      practiceWords: ["اب", "ادب", "امل", "اخبار", "ادرک"],
     },
     "و": {
       sound: "واو",
@@ -20,7 +20,7 @@ export default function LetterScreen({ route, navigation }) {
       practiceWords: ["ود", "ورثہ", "وسیم", "وصول", "وقف"],
     },
     "ء": {
-      sound: "آ" ,
+      sound: "ہمزہ",
       examples: ["اِک", "اِن", "اُمید", "اَمر", "اَثر"],
       practiceWords: ["اَثر", "اِشارہ", "اِنکار", "اُستاد", "اُمید"],
     },
@@ -29,6 +29,38 @@ export default function LetterScreen({ route, navigation }) {
       examples: ["یاد", "یقین", "یہ", "یار", "یوں", "یکتا", "یخ"],
       practiceWords: ["ید", "یاس", "یقین", "یخ", "یکجائی"],
     },
+  };
+
+  // ✅ Quiz data for each vowel
+  const quizBank = {
+    "ا": [
+      { question: "الف سے کون سا لفظ شروع ہوتا ہے؟", options: [ "کتاب","انار", "گھر"], answer: "انار" },
+      { question: "الف سے کون سا لفظ شروع ہوتا ہے؟", options: [ "وقت", "درخت","ادب"], answer: "ادب" },
+      { question: "الف سے کون سا لفظ شروع ہوتا ہے؟", options: ["اتحاد", "پہاڑ", "بندر"], answer: "اتحاد" },
+      { question: "الف سے کون سا لفظ شروع ہوتا ہے؟", options: ["دوست","انسان", "پانی"], answer: "انسان" },
+      { question: "الف سے کون سا لفظ شروع ہوتا ہے؟", options: ["ادا", "گھر", "چڑیا"], answer: "ادا" },
+    ],
+    "و": [
+      { question: "واو سے کون سا لفظ شروع ہوتا ہے؟", options: ["وقت", "سیب", "کتاب"], answer: "وقت" },
+      { question: "واو سے کون سا لفظ شروع ہوتا ہے؟", options: ["سفر","وضو", "پہاڑ"], answer: "وضو" },
+      { question: "واو سے کون سا لفظ شروع ہوتا ہے؟", options: ["واپس", "درخت", "بندر"], answer: "واپس" },
+      { question: "واو سے کون سا لفظ شروع ہوتا ہے؟", options: ["انار", "یاد","وزن"], answer: "وزن" },
+      { question: "واو سے کون سا لفظ شروع ہوتا ہے؟", options: ["گھر","وجہ",  "پانی"], answer: "وجہ" },
+    ],
+    "ء": [
+      { question: "ہمزہ سے کون سا لفظ شروع ہوتا ہے؟", options: ["اُمید", "وقت", "درخت"], answer: "اُمید" },
+      { question: "ہمزہ سے کون سا لفظ شروع ہوتا ہے؟", options: [ "کتاب","اَثر", "دوست"], answer: "اَثر" },
+      { question: "ہمزہ سے کون سا لفظ شروع ہوتا ہے؟", options: ["اِک", "بندر", "یاد"], answer: "اِک" },
+      { question: "ہمزہ سے کون سا لفظ شروع ہوتا ہے؟", options: [ "پہاڑ", "گھر","اَمر"], answer: "اَمر" },
+      { question: "ہمزہ سے کون سا لفظ شروع ہوتا ہے؟", options: ["اِن", "سیب", "پانی"], answer: "اِن" },
+    ],
+    "ی": [
+      { question: "یا سے کون سا لفظ شروع ہوتا ہے؟", options: ["یاد", "کتاب", "پہاڑ"], answer: "یاد" },
+      { question: "یا سے کون سا لفظ شروع ہوتا ہے؟", options: [ "سیب", "انار","یقین"], answer: "یقین" },
+      { question: "یا سے کون سا لفظ شروع ہوتا ہے؟", options: ["یار", "درخت", "سفر"], answer: "یار" },
+      { question: "یا سے کون سا لفظ شروع ہوتا ہے؟", options: [ "بندر","یوں", "دوست"], answer: "یوں" },
+      { question: "یا سے کون سا لفظ شروع ہوتا ہے؟", options: ["یخ", "پانی", "گھر"], answer: "یخ" },
+    ],
   };
 
   const currentVowel = vowelData[vowel] || vowelData["ا"];
@@ -46,7 +78,6 @@ export default function LetterScreen({ route, navigation }) {
   };
 
   const playVowelSound = () => {
-    // 👇 yahan har harf ki apni "sound" define hai
     speak(currentVowel.sound);
   };
 
@@ -102,89 +133,54 @@ export default function LetterScreen({ route, navigation }) {
             ))}
           </View>
         </View>
+
+        {/* 👇 Quiz Button */}
+        <TouchableOpacity
+          style={styles.quizButton}
+          onPress={() =>
+            navigation.navigate("QuizScreen", {
+              questions: quizBank[vowel] || [],
+            })
+          }
+        >
+          <Text style={styles.buttonText}>مشقی سوالات پر جائیں</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    paddingTop: 40,
-  },
+  container: { flex: 1, backgroundColor: "#fff" },
+  content: { flex: 1, padding: 20, paddingTop: 40, justifyContent: "flex-start" },
   backButton: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-    zIndex: 1,
-    padding: 8,
-    backgroundColor: "#e9f5ff",
-    borderRadius: 40,
+    position: "absolute", top: 40, left: 20, zIndex: 1, padding: 8,
+    backgroundColor: "#e9f5ff", borderRadius: 40,
   },
-  section: {
-    marginBottom: 1,
-    alignItems: "center",
-  },
-  vowelDisplay: {
-    fontSize: 100,
-    fontWeight: "bold",
-    color: "#2a52be",
-    textAlign: "center",
-  },
+  section: { marginBottom: 1, alignItems: "center" },
+  vowelDisplay: { fontSize: 100, fontWeight: "bold", color: "#2a52be", textAlign: "center" },
   soundButton: {
-    backgroundColor: "#4a90e2",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginVertical: 2,
-    marginHorizontal: 30,
+    backgroundColor: "#4a90e2", padding: 15, borderRadius: 10,
+    alignItems: "center", marginVertical: -15, marginHorizontal: 30,
   },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
   subtitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 20,
-    marginTop: 15,
-    color: "#4a90e2",
-    textAlign: "center",
+    fontSize: 20, fontWeight: "600", marginBottom: 10, marginTop: 35,
+    color: "#4a90e2", textAlign: "center",
   },
-  wordGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
+  wordGrid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center" },
   wordCard: {
-    backgroundColor: "#e9f5ff",
-    padding: 12,
-    borderRadius: 10,
-    margin: 5,
-    minWidth: 80,
-    alignItems: "center",
+    backgroundColor: "#e9f5ff", padding: 12, borderRadius: 10,
+    margin: 5, minWidth: 80, alignItems: "center",
   },
-  wordText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-  },
+  wordText: { fontSize: 18, fontWeight: "bold", color: "#000" },
   practiceWordCard: {
-    backgroundColor: "#f0f8ff",
-    padding: 12,
-    borderRadius: 10,
-    margin: 5,
-    minWidth: 80,
-    alignItems: "center",
+    backgroundColor: "#f0f8ff", padding: 12, borderRadius: 10,
+    margin: 5, minWidth: 80, alignItems: "center",
   },
-  practiceWordText: {
-    fontSize: 18,
-    color: "#000",
+  practiceWordText: { fontSize: 18, color: "#000" },
+  quizButton: {
+    backgroundColor: "#2a52be", padding: 15, borderRadius: 12,
+    alignItems: "center", marginTop: 20,
   },
 });
