@@ -1,36 +1,41 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
-export default function VowelSelectionScreen({ navigation }) {
+export default function VowelSelectionScreen({ onBack, onNext }) {
   const vowels = [
-    { letter: "ا", name: "Alif" },
-    { letter: "و", name: "Waw" },
-    { letter: "ء", name: "Hamza" },
-    { letter: "ی", name: "Ye" }
+    { letter: "ا", name: "الف" },
+    { letter: "و", name: "واو" },
+    { letter: "ء", name: "ہمزہ" },
+    { letter: "ی", name: "یا" }
   ];
   
+  const handleVowelSelect = (vowel) => {
+    onNext({ screen: "Letter", vowel: vowel.letter });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Back Button in Top Left */}
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.goBack()}
+        onPress={onBack}
       >
-        <Text style={styles.backButtonIcon}>←</Text>
+        <Ionicons name="arrow-back" size={24} color="#4867B3" />
       </TouchableOpacity>
       
       <View style={styles.content}>
-        <Text style={styles.title}>Select a Vowel</Text>
-        <Text style={styles.subtitle}>Choose a vowel to practice with</Text>
+        <Text style={styles.title}>مصوتہ منتخب کریں</Text>
+        <Text style={styles.subtitle}>مشق کے لیے ایک مصوتہ منتخب کریں</Text>
         
         <View style={styles.vowelGrid}>
           {vowels.map((vowel, index) => (
             <TouchableOpacity
               key={index}
               style={[styles.vowelButton, styles.vowelButtonShadow]}
-              onPress={() => navigation.navigate("Letter", { vowel: vowel.letter })}
+              onPress={() => handleVowelSelect(vowel)}
             >
               <Text style={styles.vowelText}>{vowel.letter}</Text>
               <Text style={styles.vowelLabel}>{vowel.name}</Text>
@@ -38,9 +43,7 @@ export default function VowelSelectionScreen({ navigation }) {
           ))}
         </View>
         
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Tap on a vowel to begin learning</Text>
-        </View>
+        
       </View>
     </SafeAreaView>
   );
@@ -76,11 +79,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
-  },
-  backButtonIcon: {
-    fontSize: 24,
-    color: "#4867B3", // Deep Blue
-    fontWeight: "bold",
   },
   title: { 
     fontSize: 32, 

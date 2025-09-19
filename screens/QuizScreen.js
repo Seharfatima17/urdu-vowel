@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from "react-na
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function QuizScreen({ route, navigation }) {
-  const { questions = [] } = route.params || {};
+export default function QuizScreen({ onBack, onNext, params }) {
+  const { questions = [] } = params || {};
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -52,7 +52,8 @@ export default function QuizScreen({ route, navigation }) {
           setIsCorrect(null);
         } else {
           // quiz complete
-          navigation.navigate("Result", { 
+          onNext({ 
+            screen: "Result", 
             correct: true, 
             totalQuestions: questions.length,
             answeredCorrectly: newCorrectAnswers.size
@@ -83,7 +84,7 @@ export default function QuizScreen({ route, navigation }) {
       {/* Back Button to return to previous screen */}
       <TouchableOpacity 
         style={styles.backButton} 
-        onPress={() => navigation.goBack()}
+        onPress={onBack}
       >
         <Ionicons name="arrow-back" size={24} color="#2a52be" />
       </TouchableOpacity>

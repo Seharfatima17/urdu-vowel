@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated } from "
 
 const { width, height } = Dimensions.get("window");
 
-export default function WelcomeScreen({ navigation }) {
+export default function WelcomeScreen({ onNext }) {
   const fadeAnim = new Animated.Value(0);
   const slideAnim = new Animated.Value(50);
   const scaleValue = new Animated.Value(0.8);
@@ -40,6 +40,10 @@ export default function WelcomeScreen({ navigation }) {
     ).start();
   }, []);
 
+  const handleStart = () => {
+    onNext({ screen: "VowelSelection" });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backgroundPattern}>
@@ -57,24 +61,24 @@ export default function WelcomeScreen({ navigation }) {
       
       <View style={styles.contentContainer}>
         <Animated.View style={{ opacity: fadeAnim }}>
-          <Text style={styles.title}>Urdu Vowels Activity</Text>
+          <Text style={styles.title}>اردو مصوتے</Text>
         </Animated.View>
         
         <Animated.View style={{ transform: [{ translateY: slideAnim }] }}>
-          <Text style={styles.subtitle}>Learn Urdu vowels with interactive exercises</Text>
+          <Text style={styles.subtitle}>مصوتوں کو آسان مشقوں کے ساتھ سیکھیں</Text>
         </Animated.View>
         
         <Animated.View style={[styles.buttonContainer, { transform: [{ scale: scaleValue }] }]}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("VowelSelection")}
+            onPress={handleStart}
           >
-            <Text style={styles.buttonText}>Start Learning</Text>
+            <Text style={styles.buttonText}>سیکھنا شروع کریں</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
       
-      <Text style={styles.footerText}>Designed for Urdu Language Learners</Text>
+      <Text style={styles.footerText}>اردو زبان سیکھنے والوں کے لیے بنایا گیا</Text>
     </View>
   );
 }
@@ -137,6 +141,7 @@ const styles = StyleSheet.create({
   urduText2: {
     position: "absolute",
     bottom: 150,
+    marginTop:70,
     right: 70,
     fontSize: 70,
     color: "#ECA5B3", // Soft Pink
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   button: { 
     backgroundColor: "#4867B3", // Deep Blue

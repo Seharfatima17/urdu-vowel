@@ -1,7 +1,6 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React, { useState } from "react";
 
+// Import all your screens
 import WelcomeScreen from "./screens/WelcomeScreen";
 import VowelSelectionScreen from "./screens/VowelSelectionScreen";
 import LetterScreen from "./screens/LetterScreen";
@@ -9,19 +8,59 @@ import WordsScreen from "./screens/WordsScreen";
 import QuizScreen from "./screens/QuizScreen";
 import ResultScreen from "./screens/ResultScreen";
 
-const Stack = createNativeStackNavigator();
-
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="VowelSelection" component={VowelSelectionScreen} />
-        <Stack.Screen name="Letter" component={LetterScreen} />
-        <Stack.Screen name="Words" component={WordsScreen} />
-        <Stack.Screen name="QuizScreen" component={QuizScreen} />
-        <Stack.Screen name="Result" component={ResultScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  const [screen, setScreen] = useState("Welcome");
+  const [params, setParams] = useState({});
+
+  // Helper function to navigate
+  const navigate = (nextScreen, nextParams = {}) => {
+    setScreen(nextScreen);
+    setParams(nextParams);
+  };
+
+  // Render screens based on current screen state
+  if (screen === "Welcome") {
+    return <WelcomeScreen onNext={(p) => navigate(p.screen, p)} />;
+  }
+
+  if (screen === "VowelSelection") {
+    return <VowelSelectionScreen 
+             onBack={() => navigate("Welcome")} 
+             onNext={(p) => navigate(p.screen, p)}
+           />;
+  }
+
+  if (screen === "Letter") {
+    return <LetterScreen 
+             onBack={() => navigate("VowelSelection")} 
+             onNext={(p) => navigate(p.screen, p)}
+             params={params}
+           />;
+  }
+
+  // if (screen === "Words") {
+  //   return <WordsScreen 
+  //            onBack={() => navigate("Letter", params)} 
+  //            onNext={(p) => navigate(p.screen, p)}
+  //            params={params}
+  //          />;
+  // }
+
+  if (screen === "QuizScreen") {
+    return <QuizScreen 
+             onBack={() => navigate("VowelSelection")} 
+             onNext={(p) => navigate(p.screen, p)}
+             params={params}
+           />;
+  }
+
+  if (screen === "Result") {
+    return <ResultScreen 
+             onBack={() => navigate("Welcome")} 
+             onRestart={() => navigate("VowelSelection")}
+             params={params}
+           />;
+  }
+
+  return null;
 }
